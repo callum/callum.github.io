@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <title>callumj</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Poly:400">
+  </head>
+  <body>
+    <section class="site-content">
+      <h1>Callumj</h1>
+
+      <p class="bigger">
+        Callum Jefferies is an interaction designer and developer in London.
+        His work is thought out and refined, with strong systematic underpinning.
+      </p>
+
+      <p>
+        I have 6 years&rsquo; experience in digital design and development.
+        I hold a <span class="nobr">BA (Hons)</span> in Visual Communication and
+        <a href="http://www.dandad.org/awards/new-blood/2011/categories/11/interactive-design/07320/callum-jefferies">an award from D&amp;AD</a>.
+        Currently working with <a href="http://madebymany.com/">Made by Many</a>.
+      </p>
+
+      <ul>
+        <li><a href="https://twitter.com/callumj_">Twitter</a></li>
+        <li><a href="https://github.com/callum">GitHub</a></li>
+        <li><a href="http://www.dandad.org/talent/portfolios/530/callum-jefferies/10059/talent-profile">D&amp;AD Talent Profile</a></li>
+      </ul>
+
+      <footer class="site-footer">
+        <p>&copy; callumj 2013</p>
+      </footer>
+
+      <canvas id="rect" class="rect" width="200" height="140"></canvas>
+    </section>
+
+    <script src="src/paper.js"></script>
+    <script type="text/paperscript" canvas="rect">
+    var options = {
+      maxVector: 30, // Percentage of width/height points can move
+      animationSteps: 100, // Number of steps per point animation
+      fillColor: "#2f2f2f"
+    };
+
+    var path = new Path();
+    var isDrawn = false;
+    var points = [];
+    var bounds;
+    var width;
+    var height;
+    var maxVectorX;
+    var maxVectorY;
+    var newPoint;
+    var randomPoint;
+
+
+    function PointWithBounds(min, max) {
+      this.activated = true;
+      this.vector = 0;
+      this.setBounds(min, max);
+      this.setRandomDestination();
+    }
+
+    PointWithBounds.prototype.setBounds = function(min, max) {
+      this.min = min;
+      this.max = max;
+    };
+
+    PointWithBounds.prototype.setRandomDestination = function() {
+      this.destination = Point.random() * (this.max - this.min + 1) + this.min;
+    };
+
+    function draw() {
+      width = view.size.width;
+      height = view.size.height;
+      maxVectorX = Math.round(width / 100 * options.maxVector);
+      maxVectorY = Math.round(height / 100 * options.maxVector);
+
+      bounds = [
+        {
+          min: new Point(0, 0),
+          max: new Point(maxVectorX, maxVectorY)
+        }, {
+          min: new Point(0, height),
+          max: new Point(maxVectorX, height - maxVectorY)
+        }, {
+          min: new Point(width, height),
+          max: new Point(width - maxVectorX, height - maxVectorY)
+        }, {
+          min: new Point(width, 0),
+          max: new Point(width - maxVectorX, maxVectorY)
+        }
+      ];
+
+      bounds.forEach(function(bound, index) {
+        if (isDrawn) {
+          points[index].setBounds(bound.min, bound.max);
+          points[index].activated = true;
+          return;
+        }
+
+        newPoint = new PointWithBounds(bound.min, bound.max);
+        points.push(newPoint);
+        path.add(newPoint.destination);
+      });
+
+      path.fillColor = options.fillColor;
+      path.closed = true;
+      isDrawn = true;
+    }
+
+    function togglePoint() {
+      randomPoint = points[Math.floor(Math.random() * points.length)];
+      randomPoint.activated = !randomPoint.activated;
+      setTimeout(togglePoint, Math.round(Math.random() * 5000));
+    }
+
+    function onFrame() {
+      points.forEach(function(point, index) {
+        point.vector = point.destination - path.segments[index].point;
+        path.segments[index].point += point.vector / options.animationSteps;
+
+        if (point.vector.length < 3 && point.activated) {
+          point.setRandomDestination();
+        }
+      });
+    }
+
+    draw();
+    togglePoint();
+    </script>
+    <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-22864242-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+  </body>
+</html>

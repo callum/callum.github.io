@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "Miso";
+  src: url("miso-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html {
+  font-size: 80%;
+}
+
+body {
+  margin: 0;
+  font-family: "Poly", Georgia, serif;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: #2f2f2f;
+}
+
+h1 {
+  font-family: "Miso", "Trebuchet MS", sans-serif;
+  font-size: 3rem;
+  font-weight: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: normal;
+}
+
+ul {
+  list-style-type: square;
+}
+
+a {
+  background-color: #ffffd0;
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+.bigger {
+  font-size: 1.6rem;
+  line-height: 1.4;
+}
+
+.site-content {
+  max-width: 42rem;
+  margin: 6%;
+}
+
+.site-content :first-child {
+  margin-top: 0;
+}
+
+.site-content :last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 30em) {
+  html {
+    font-size: 90%;
+  }
+}
+
+@media (min-width: 35em) {
+  html {
+    font-size: 100%;
+  }
+
+  .site-content {
+    margin: 6% 10%;
+  }
+}
+
+@media (min-width: 60em) {
+  .rect {
+    position: fixed;
+    right: 2em;
+    bottom: 2em;
+    z-index: -1;
+  }
+}
