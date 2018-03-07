@@ -16,7 +16,7 @@ body {
 }
 
 main {
-  max-width: 42rem;
+  max-width: 38rem;
   margin: 6%;
 }
 
@@ -29,6 +29,7 @@ main :last-child {
 }
 
 img {
+  display: block;
   width: 6rem;
   height: 6rem;
 }
